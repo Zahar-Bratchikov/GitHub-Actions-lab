@@ -26,27 +26,12 @@ jobs:
           pip install --upgrade pip
           pip install pytest pytest-html
 
-      - name: Run tests and generate report
+      - name: Run tests from specific file and generate report
         run: |
-          pytest --html=report.html --self-contained-html
+          pytest test_lib.py --html=report.html --self-contained-html
 
       - name: Upload test report as artifact
         uses: actions/upload-artifact@v3
         with:
           name: test-report
           path: report.html
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: success()
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Upload code as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: code
-          path: .
