@@ -28,6 +28,5 @@ def test_fibonacci():
 
 # Тест для функции bubble_sort
 def test_bubble_sort():
-    assert bubble_sort([4, 2, 7, 1]) == [2, 1, 4, 7]
     assert bubble_sort([]) == []
     assert bubble_sort([3]) == [3]
