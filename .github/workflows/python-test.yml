@@ -9,9 +9,8 @@ on:
       - main
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -26,7 +25,22 @@ jobs:
           pip install --upgrade pip
           pip install pytest pytest-html
 
-      - name: Run tests from specific file and generate report
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install pytest pytest-html
+
+      - name: Run tests and generate report
         run: |
           pytest test_lib.py --html=report.html --self-contained-html
 
@@ -35,3 +49,17 @@ jobs:
         with:
           name: test-report
           path: report.html
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Upload code as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: code
+          path: .
