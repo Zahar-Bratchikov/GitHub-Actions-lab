@@ -43,7 +43,6 @@ jobs:
       - name: Run tests and generate report
         run: |
           pytest test_lib.py --html=report.html --self-contained-html
-        continue-on-error: true  # Позволяет тестам завершаться с ошибками без прерывания workflow
 
       - name: Upload test report as artifact
         if: always()  # Всегда загружает отчет, независимо от успеха или провала тестов
